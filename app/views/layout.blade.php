@@ -9,7 +9,7 @@
 
     <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}">
 
-    <title>Illuminate Sign In Application</title>
+    <title>Capacity Day Sign In Application</title>
 
     <link rel="stylesheet" href="{{ asset('packages/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('sticky-footer.css') }}">
@@ -56,7 +56,7 @@
 
             <div class="page-header">
                 <img src="{{ asset('images/banner.jpg') }}" class="img-responsive" alt="Capacity Day Banner - Robbie Dawkins">
-                <h1>Capacity Day (Robbie Dawkins) @if ($subtitle) <span class="subtitle"><small>&raquo; {{ $subtitle }}</small></span> @endif</h1>
+                <h1>Capacity Day :: Robbie Dawkins @if ($subtitle) <span class="subtitle"><small>&raquo; {{ $subtitle }}</small></span> @endif</h1>
             </div>
 
             <div>
