@@ -18,25 +18,6 @@
 	</div>
 </div>
 
-<div class="col-sm-8">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">Registration by day</h3>
-		</div>
-		<div class="panel-body">
-			<div class="col-sm-6">
-				<canvas id="registrationDayChart" width="250" height="250"></canvas>
-			</div>
-			<div class="col-sm-6">
-				<ul class="list-group">
-				    <li class="list-group-item legend"><span style="background-color: #1f78b4; border-radius: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> Friday   <span class="badge alert-info">{{{ $friday_registration_count }}}</span></li>
-				    <li class="list-group-item legend"><span style="background-color: #b2df8a; border-radius: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;</span> Saturday <span class="badge alert-info">{{{ $saturday_registration_count }}}</span></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 @section('extra_js')
 
@@ -54,15 +35,6 @@
 
 	var ctx1 = document.getElementById("registrationStatusChart").getContext("2d");
 	var pieChart1 = new Chart(ctx1).Doughnut(registration_status_data);
-
-
-	var registration_days_data = [
-		{ value: {{{ $friday_registration_count }}},   label: 'Friday',   color: '#1f78b4', highlight: ColorLuminance('#1f78b4', 0.2) },
-		{ value: {{{ $saturday_registration_count }}}, label: 'Saturday', color: '#b2df8a', highlight: ColorLuminance('#b2df8a', 0.2) },
-	];
-
-	var ctx2 = document.getElementById("registrationDayChart").getContext("2d");
-	var pieChart2 = new Chart(ctx2).Doughnut(registration_days_data);
 
 	function ColorLuminance(hex, lum) {
 
