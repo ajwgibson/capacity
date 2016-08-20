@@ -9,7 +9,8 @@ class BookingController extends BaseController {
         $bookings = Booking::orderBy('last')->orderBy('first');
 
         $filtered = false;
-		$filter_name           = Session::get('bookings_filter_name',       '');
+        $filter_name           = Session::get('bookings_filter_name',       '');
+		$filter_email          = Session::get('bookings_filter_email',      '');
         $filter_church         = Session::get('bookings_filter_church',     '');
         $filter_eventbrite     = Session::get('bookings_filter_eventbrite', '');
         $filter_registered     = Session::get('bookings_filter_registered', '');
@@ -21,6 +22,11 @@ class BookingController extends BaseController {
                     $query->where('bookings.first', 'LIKE', "%$filter_name%")
                           ->orWhere('bookings.last', 'LIKE', "%$filter_name%");
                 });	
+            $filtered = true;
+        }
+
+        if (!(empty($filter_email))) {
+            $bookings = $bookings->where('email', 'LIKE', "%$filter_email%");
             $filtered = true;
         }
 
@@ -51,6 +57,7 @@ class BookingController extends BaseController {
 				->with('bookings', $bookings)
 				->with('filtered', $filtered)
                 ->with('filter_name', $filter_name)
+                ->with('filter_email', $filter_email)
                 ->with('filter_church', $filter_church)
                 ->with('filter_eventbrite', $filter_eventbrite)
                 ->with('filter_registered', $filter_registered)
@@ -65,12 +72,14 @@ class BookingController extends BaseController {
     public function filter()
     {
         $filter_name           = Input::get('filter_name');
+        $filter_email          = Input::get('filter_email');
         $filter_church         = Input::get('filter_church');
         $filter_eventbrite     = Input::get('filter_eventbrite');
         $filter_registered     = Input::get('filter_registered');
         $filter_not_registered = Input::get('filter_not_registered');
         
         Session::put('bookings_filter_name',           $filter_name);
+        Session::put('bookings_filter_email',          $filter_email);
         Session::put('bookings_filter_church',         $filter_church);
         Session::put('bookings_filter_eventbrite',     $filter_eventbrite);
         Session::put('bookings_filter_registered',     $filter_registered);
@@ -88,6 +97,7 @@ class BookingController extends BaseController {
     public function resetFilter()
     {
         if (Session::has('bookings_filter_name'))           Session::forget('bookings_filter_name');
+        if (Session::has('bookings_filter_email'))          Session::forget('bookings_filter_email');
         if (Session::has('bookings_filter_church'))         Session::forget('bookings_filter_church');
         if (Session::has('bookings_filter_eventbrite'))     Session::forget('bookings_filter_eventbrite');
         if (Session::has('bookings_filter_registered'))     Session::forget('bookings_filter_registered');

@@ -42,6 +42,14 @@
         		<p class="help-block">You can enter a full or partial first or last name, but not both</p>
             </div>
 
+            <div class="form-group">
+                {{ Form::label('filter_email', 'Email address', array ('class' => 'control-label')) }}
+                <div>
+                    {{ Form::text('filter_email', $filter_email, array ('class' => 'form-control')) }}
+                </div>
+                <p class="help-block">You can enter a full or partial email address</p>
+            </div>
+
         </div>
 
         <div class="col-sm-6 col-sm-offset-6">
@@ -64,7 +72,8 @@
 <table class="table table-striped table-bordered">
 	<thead>
 		<tr>
-			<th>Name</th>
+            <th>Name</th>
+			<th>Email address</th>
 			<th>Tickets</th>
 			<th>Date &amp; time</th>
 		</tr>
@@ -72,7 +81,8 @@
 	<tbody>
 	@foreach ($registrations as $registration)
 		<tr>
-			<td>{{{ $registration->name() }}}</td>
+            <td>{{{ $registration->name() }}}</td>
+			<td>{{{ $registration->email() }}}</td>
 			<td>{{{ $registration->tickets }}}</td>
 			<td>{{{ $registration->created_at }}}</td>
 		</tr>

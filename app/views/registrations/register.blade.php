@@ -90,7 +90,7 @@
               @if ($booking->registered())
               <p><b><i>This booking is already fully registered.</i></b></p>
               @else
-              {{ Form::open(array('route' => 'register.booking', 'class' => 'form-inline')) }}
+              {{ Form::open(array('route' => 'register.booking', 'class' => '')) }}
               {{ Form::hidden('booking_id', $booking->id) }}
               @if ($booking->to_register() > 1)
               <div class="form-group">
@@ -100,6 +100,11 @@
               @else
               {{ Form::hidden('tickets', 1) }}
               @endif
+              <div class="form-group">
+                {{ Form::label('email', 'Email address', array ('class' => 'control-label')) }}
+                {{ Form::text('email', $booking->email, array ('class' => 'form-control email')) }}
+                <p class="help-block">If this is blank, please ask for a contact email address for follow-up purposes</p>
+              </div>
               {{ Form::submit('Register', array ('class' => 'btn btn-primary')) }}
               {{ Form::close() }}
               @endif
@@ -164,6 +169,16 @@
               {{ Form::text('name', '', array ('class' => 'form-control')) }}
             </div>
           </div>
+        </div>
+
+        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+          {{ Form::label('name', 'Contact email address', array ('class' => 'control-label')) }}
+          <div class="row">
+            <div class="col-xs-12">
+              {{ Form::text('email', '', array ('class' => 'form-control')) }}
+            </div>
+          </div>
+          <p class="help-block">Please ask for a contact email address for follow-up purposes</p>
         </div>
 
         <div class="form-group {{ $errors->has('tickets') ? 'has-error' : '' }}">

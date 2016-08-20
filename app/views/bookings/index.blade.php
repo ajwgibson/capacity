@@ -49,6 +49,14 @@
         		<p class="help-block">You can enter a full or partial first or last name, but not both</p>
             </div>
 
+            <div class="form-group">
+                {{ Form::label('filter_email', 'Email address', array ('class' => 'control-label')) }}
+                <div>
+                    {{ Form::text('filter_email', $filter_email, array ('class' => 'form-control')) }}
+                </div>
+                <p class="help-block">You can enter a full or partial email address</p>
+            </div>
+
         </div>
 
         <div class="col-sm-6 col-sm-offset-6">
@@ -72,7 +80,8 @@
 	<thead>
 		<tr>
 			<th>Last name</th>
-			<th>First name</th>
+            <th>First name</th>
+			<th>Email address</th>
 			<th>Tickets booked</th>
 			<th>Registrations</th>
 			<th>Booking reference or ticket number(s)</th>
@@ -83,7 +92,8 @@
 	@foreach ($bookings as $booking)
 		<tr>
 			<td>{{{ $booking->last }}}</td>
-			<td>{{{ $booking->first }}}</td>
+            <td>{{{ $booking->first }}}</td>
+			<td>{{{ $booking->email }}}</td>
 			<td>{{{ $booking->tickets }}}</td>
 			<td>{{{ $booking->registration_count() }}}</td>
 			<td>{{{ $booking->numbers }}}</td>

@@ -79,10 +79,15 @@ class RegistrationController extends BaseController {
     public function register_booking()
     {
     	$booking_id = Input::get('booking_id');
-    	$tickets = Input::get('tickets');
+      $tickets    = Input::get('tickets');
+    	$email      = Input::get('email');
 
     	$booking = Booking::findOrFail($booking_id);
-    	$booking->registrations()->save(new Registration(array('tickets' => $tickets)));
+    	$booking->registrations()->save(
+        new Registration(
+          array(
+            'tickets' => $tickets, 
+            'email_address' => $email)));
 
     	return Redirect::route('register')
 		            ->withInput()
@@ -96,24 +101,28 @@ class RegistrationController extends BaseController {
     {
     	$name    = Input::get('name');
     	$tickets = Input::get('tickets');
+      $email   = Input::get('email');
 
     	$validator = Validator::make(
 		    array(
-		    	'name' => $name, 
+		    	'name'    => $name, 
 		    	'tickets' => $tickets),
 		    array(
-		    	'name' => array('required'),
+		    	'name'    => array('required'),
 		    	'tickets' => array('required', 'integer', 'min:1'))
-		);
+		  );
 
-		if ($validator->fails()) {
-            return Redirect::route('register')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
+		  if ($validator->fails()) {
+          return Redirect::route('register')
+              ->withInput()
+              ->withErrors($validator);
+      }
     	
-    	Registration::create(array('tickets' => $tickets, 'name' => $name));
+    	Registration::create(
+        array(
+          'tickets'       => $tickets, 
+          'name'          => $name,
+          'email_address' => $email));
 
     	return Redirect::route('register')
 		            ->with('info', 'Registration complete!');
@@ -127,23 +136,34 @@ class RegistrationController extends BaseController {
         $this->layout->with('subtitle', 'Registrations');
 
         $registrations = 
-            Registration::orderBy('registrations.created_at', 'desc');
+            Registration::orderBy('registrations.created_at', 'desc')
+              ->join('bookings', 'registrations.booking_id', '=', 'bookings.id', 'left outer')
+              ->addSelect('registrations.*')
+              ->addSelect('bookings.first')
+              ->addSelect('bookings.last')
+              ->addSelect('bookings.email');
 
         $filtered = false;
         $filter_name     = Session::get('registrations_filter_name',     '');
+        $filter_email    = Session::get('registrations_filter_email',    '');
         $filter_friday   = Session::get('registrations_filter_friday',   '');
         $filter_saturday = Session::get('registrations_filter_saturday', '');
 
         if (!(empty($filter_name))) {
             $registrations = $registrations
-                ->join('bookings', 'registrations.booking_id', '=', 'bookings.id', 'left outer')
-                ->addSelect('registrations.*')
-                ->addSelect('bookings.first')
-                ->addSelect('bookings.last')
                 ->where(function($query) use($filter_name) {
                     $query->where('bookings.first',       'LIKE', "%$filter_name%")
                           ->orWhere('bookings.last',      'LIKE', "%$filter_name%")
                           ->orWhere('registrations.name', 'LIKE', "%$filter_name%");
+                }); 
+            $filtered = true;
+        }
+
+        if (!(empty($filter_email))) {
+            $registrations = $registrations
+                ->where(function($query) use($filter_email) {
+                    $query->where('bookings.email',                'LIKE', "%$filter_email%")
+                          ->orWhere('registrations.email_address', 'LIKE', "%$filter_email%");
                 }); 
             $filtered = true;
         }
@@ -165,6 +185,7 @@ class RegistrationController extends BaseController {
                 ->with('registrations', $registrations)
                 ->with('filtered', $filtered)
                 ->with('filter_name', $filter_name)
+                ->with('filter_email', $filter_email)
                 ->with('filter_friday', $filter_friday)
                 ->with('filter_saturday', $filter_saturday);
     }
@@ -177,10 +198,12 @@ class RegistrationController extends BaseController {
     public function filter()
     {
         $filter_name     = Input::get('filter_name');
+        $filter_email    = Input::get('filter_email');
         $filter_friday   = Input::get('filter_friday');
         $filter_saturday = Input::get('filter_saturday');
         
         Session::put('registrations_filter_name',      $filter_name);
+        Session::put('registrations_filter_email',     $filter_email);
         Session::put('registrations_filter_friday',    $filter_friday);
         Session::put('registrations_filter_saturday',  $filter_saturday);
 
@@ -196,6 +219,7 @@ class RegistrationController extends BaseController {
     public function resetFilter()
     {
         if (Session::has('registrations_filter_name'))       Session::forget('registrations_filter_name');
+        if (Session::has('registrations_filter_email'))      Session::forget('registrations_filter_email');
         if (Session::has('registrations_filter_friday'))     Session::forget('registrations_filter_friday');
         if (Session::has('registrations_filter_saturday'))   Session::forget('registrations_filter_saturday');
 
