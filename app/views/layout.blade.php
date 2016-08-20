@@ -56,7 +56,7 @@
 
             <div class="page-header">
                 <img src="{{ asset('images/banner.jpg') }}" class="img-responsive" alt="Capacity Day Banner - Robbie Dawkins">
-                <h1>Capacity Day - Robbie Dawkins @if ($subtitle) <span class="subtitle"><small>&raquo; {{ $subtitle }}</small></span> @endif</h1>
+                <h1>Capacity day @if ($subtitle) <span class="subtitle"><small>&raquo; {{ $subtitle }}</small></span> @endif</h1>
             </div>
 
             <div>
