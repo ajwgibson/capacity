@@ -74,7 +74,8 @@
 		<tr>
             <th>Name</th>
 			<th>Email address</th>
-			<th>Tickets</th>
+            <th>Tickets</th>
+			<th>Pre-booked</th>
 			<th>Date &amp; time</th>
 		</tr>
 	</thead>
@@ -83,7 +84,8 @@
 		<tr>
             <td>{{{ $registration->name() }}}</td>
 			<td>{{{ $registration->email() }}}</td>
-			<td>{{{ $registration->tickets }}}</td>
+            <td>{{{ $registration->tickets }}}</td>
+			<td>{{{ $registration->booking ? 'Yes' : 'No' }}}</td>
 			<td>{{{ $registration->created_at }}}</td>
 		</tr>
 	@endforeach

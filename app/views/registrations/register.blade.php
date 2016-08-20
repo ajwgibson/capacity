@@ -133,6 +133,7 @@
         <ul class="list-group">
           <li class="list-group-item">Registered <span class="badge alert-info">{{{ $registration_count_total }}}</span></li>
           <li class="list-group-item">Expected <span class="badge alert-info">{{{ $expected_count }}}</span></li>
+          <li class="list-group-item">Still to register <span class="badge alert-info">{{{ $still_to_register }}}</span></li>
         </ul>
       </div>
     </div>
