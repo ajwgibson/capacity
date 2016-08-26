@@ -24,21 +24,12 @@
     </div>
     @endif
 
-    <p><em>Enter a ticket number or customer name to search for a booking:</em></p>
+    <p><em>Enter a delegate's name to search for a booking:</em></p>
 
     {{ Form::open(array('route' => 'register.search')) }}
 
     <div class="form-group">
-      {{ Form::label('ticket', 'Ticket number', array ('class' => 'control-label')) }}
-      <div class="row">
-        <div class="col-xs-4">
-          {{ Form::text('ticket', Input::get('ticket'), array ('class' => 'form-control')) }}
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      {{ Form::label('name', 'Customer name', array ('class' => 'control-label')) }}
+      {{ Form::label('name', 'Delegate name', array ('class' => 'control-label')) }}
       <div class="row">
         <div class="col-xs-6">
           {{ Form::text('name', Input::get('name'), array ('class' => 'form-control')) }}
@@ -46,7 +37,7 @@
       </div>
       <p class="help-block">
         <em>
-          Try the customer's first name, last name or both.<br/>
+          Try the delegate's first name, last name or both.<br/>
           If you're not sure of the correct spelling try putting in just part of the name.
         </em>
       </p>
